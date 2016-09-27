@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MachineMon.Client")]
+[assembly: AssemblyTitle("MachineMon.DataAccess")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("MachineMon.Client")]
+[assembly: AssemblyProduct("MachineMon.DataAccess")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("a4086f27-dfff-412a-b367-898bfc88a238")]
+[assembly: Guid("4a73daaf-c374-4c5d-b8a1-fe20077dd559")]
 
 // Version information for an assembly consists of the following four values:
 //

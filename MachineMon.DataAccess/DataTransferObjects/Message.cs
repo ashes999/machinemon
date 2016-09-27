@@ -1,0 +1,26 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MachineMon.DataAccess.DataTransferObjects
+{
+    public class Message
+    {
+        /// <summary>
+        /// The machine name of the sender
+        /// </summary>
+        public string Sender { get; set; } 
+
+        /// <summary>
+        /// The actual text message we're sending
+        /// </summary>
+        public string Contents { get; set; }
+
+        /// <summary>
+        /// The date that the message was posted/received, in UTC.
+        /// </summary>
+        public DateTime MessageDateTimeUtc { get; set; }
+    }
+}

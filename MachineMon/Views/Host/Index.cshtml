@@ -1,0 +1,18 @@
+﻿@model IEnumerable<MachineMon.DataAccess.DataTransferObjects.Host>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Add", "Create")
+</p>
+
+<ul>
+    @foreach (var item in Model)
+    {
+        <li>@Html.DisplayFor(modelItem => item.FriendlyName) (FQDN: @Html.DisplayFor(modelItem => item.Fqdn))</li>
+    }
+</ul>
