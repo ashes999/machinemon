@@ -1,19 +1,33 @@
 #!/usr/bin/env python
-import sys
+import datetime
+import json
 import pika
+import socket
+import sys
 
-connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
-channel = connection.channel()
+def create_json(message):
+    data = {}
+    data["Contents"] = message
+    data["Sender"] = socket.gethostname()
+    data["MessageDateTimeUtc"] = datetime.datetime.utcnow().isoformat()
+    return json.dumps(data)
 
-channel.queue_declare(queue='hello')
+def main_loop():
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+    channel = connection.channel()
 
-print("Type a message. Type 'quit' to quit.")
-message = ''
+    channel.queue_declare(queue='hello')
 
-while (message != 'quit'):
-    message = input('> ')
-    channel.basic_publish(exchange='', routing_key='hello', body=message)    
-    print("  Sent: {0}".format(message))
+    print("Type a message. Type 'quit' to quit.")
+    message = ''
 
-print("Bye!")
-connection.close()
+    while (message != 'quit'):
+        message = input('> ')
+        if message != 'quit':
+            channel.basic_publish(exchange='', routing_key='hello', body = create_json(message))    
+            print("  Sent: {0}".format(message))
+
+    print("Bye!")
+    connection.close()
+
+main_loop()
