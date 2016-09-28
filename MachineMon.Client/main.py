@@ -3,31 +3,32 @@ import datetime
 import json
 import pika
 import socket
-import sys
+import time
 
-def create_json(message):
-    data = {}
-    data["Contents"] = message
-    data["Sender"] = socket.gethostname()
-    data["MessageDateTimeUtc"] = datetime.datetime.utcnow().isoformat()
-    return json.dumps(data)
+from metrics.free_disk_space import FreeDiskSpaceMetric
 
-def main_loop():
-    connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
-    channel = connection.channel()
+class MachineMonClient:
 
-    channel.queue_declare(queue='hello')
+    SEND_INTERVAL_IN_SECONDS = 60
 
-    print("Type a message. Type 'quit' to quit.")
-    message = ''
+    def create_json(self, message):
+        data = {}
+        data["Contents"] = message
+        data["Sender"] = socket.gethostname()
+        data["MessageDateTimeUtc"] = datetime.datetime.utcnow().isoformat()
+        return json.dumps(data)
 
-    while (message != 'quit'):
-        message = input('> ')
-        if message != 'quit':
-            channel.basic_publish(exchange='', routing_key='hello', body = create_json(message))    
-            print("  Sent: {0}".format(message))
+    def start(self):
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+        channel = connection.channel()
 
-    print("Bye!")
-    connection.close()
+        channel.queue_declare(queue='hello')
 
-main_loop()
+        while (True):
+            message = FreeDiskSpaceMetric().get_metric()["message"]
+            channel.basic_publish(exchange='', routing_key='hello', body = self.create_json(message))    
+            time.sleep(self.SEND_INTERVAL_IN_SECONDS)
+
+        connection.close()
+
+MachineMonClient().start()
