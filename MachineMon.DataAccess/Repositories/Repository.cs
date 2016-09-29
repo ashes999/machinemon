@@ -38,6 +38,14 @@ namespace MachineMon.DataAccess.Repositories
             }
         }
 
+        public void Execute(string sql, object parameters = null)
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Execute(sql, parameters);
+            }
+        }
+
         private string GetValues<T>(IEnumerable<string> fields)
         {
             var type = typeof(T);

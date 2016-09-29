@@ -1,5 +1,6 @@
 ﻿using MachineMon.DataAccess.DataTransferObjects;
 using MachineMon.DataAccess.Repositories;
+using MachineMon.RabbitMq;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -44,28 +45,17 @@ namespace MachineMon
 
         private void SetupRabbitMqSubscriber()
         {
-            var httpContext = HttpContext.Current;
-
             var factory = new ConnectionFactory() { HostName = "localhost" };
             connection = factory.CreateConnection();
             channel = connection.CreateModel();
             channel.QueueDeclare(queue: "hello", durable: false, exclusive: false, autoDelete: false, arguments: null);
 
             var consumer = new EventingBasicConsumer(channel);
-            consumer.Received += (model, ea) =>
+            var processor = new RabbitMqMessageProcessor(repository, HttpContext.Current);
+
+            consumer.Received += (model, eventArgs) =>
             {
-                try
-                {
-                    var body = ea.Body;
-                    var json = Encoding.UTF8.GetString(body);
-                    var message = JsonConvert.DeserializeObject<Message>(json);
-                    this.repository.Insert<Message>(message);
-                }
-                catch (Exception e)
-                {
-                    // ELMAH doesn't automatically catch these errors. Force it to.
-                    Elmah.ErrorLog.GetDefault(httpContext).Log(new Elmah.Error(e));
-                }
+                processor.Process(eventArgs);
             };
             channel.BasicConsume(queue: "hello", noAck: true, consumer: consumer);
         }
