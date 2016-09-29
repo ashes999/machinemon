@@ -19,10 +19,10 @@ namespace MachineMon
 {
     public class MvcApplication : System.Web.HttpApplication
     {
-        private Repository repository;
-
         private static IConnection connection;
         private static IModel channel;
+
+        private Repository repository;
 
         protected void Application_Start()
         {
@@ -44,6 +44,8 @@ namespace MachineMon
 
         private void SetupRabbitMqSubscriber()
         {
+            var httpContext = HttpContext.Current;
+
             var factory = new ConnectionFactory() { HostName = "localhost" };
             connection = factory.CreateConnection();
             channel = connection.CreateModel();
@@ -52,10 +54,18 @@ namespace MachineMon
             var consumer = new EventingBasicConsumer(channel);
             consumer.Received += (model, ea) =>
             {
-                var body = ea.Body;
-                var json = Encoding.UTF8.GetString(body);
-                var message = JsonConvert.DeserializeObject<Message>(json);
-                this.repository.Insert<Message>(message);
+                try
+                {
+                    var body = ea.Body;
+                    var json = Encoding.UTF8.GetString(body);
+                    var message = JsonConvert.DeserializeObject<Message>(json);
+                    this.repository.Insert<Message>(message);
+                }
+                catch (Exception e)
+                {
+                    // ELMAH doesn't automatically catch these errors. Force it to.
+                    Elmah.ErrorLog.GetDefault(httpContext).Log(new Elmah.Error(e));
+                }
             };
             channel.BasicConsume(queue: "hello", noAck: true, consumer: consumer);
         }

@@ -6,7 +6,7 @@ import sys
 class FreeDiskSpaceMetric:
     def get_metric(self):
         percent_free = self.get_free_space_percent()
-        return { "message": "{0}% free".format(percent_free), "is_error": percent_free <= 25 }
+        return { "Contents": "{0}% free".format(percent_free), "IsError": percent_free <= 25, "Metric": "free_space" }
 
     def get_free_space_percent(self):
         """Return the percentage of free space on the main drive, as an integer (eg. 48%)"""

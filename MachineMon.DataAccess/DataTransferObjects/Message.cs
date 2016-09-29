@@ -14,6 +14,11 @@ namespace MachineMon.DataAccess.DataTransferObjects
         public string Sender { get; set; } 
 
         /// <summary>
+        /// The metric we're sending data for. The server usually keeps one message per (sender, metric).
+        /// </summary>
+        public string Metric { get; set; }
+
+        /// <summary>
         /// The actual text message we're sending
         /// </summary>
         public string Contents { get; set; }
