@@ -19,10 +19,11 @@ class MachineMonClient:
         data["MessageDateTimeUtc"] = datetime.datetime.utcnow().isoformat()
         return json.dumps(data)
 
-    def start(self, host_name):
-        print("Connecting to {0} ...".format(host_name))
-        credentials = pika.PlainCredentials('machinemon', 'machinemon')
-        connection = pika.BlockingConnection(pika.ConnectionParameters(host=host_name, credentials=credentials))
+    def start(self, config):
+        hostname = config["hostname"]
+        print("Connecting to {0} ...".format(hostname))
+        credentials = pika.PlainCredentials(config["username"], config["password"])
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host=hostname, credentials=credentials))
         channel = connection.channel()
         channel.queue_declare(queue='hello')
 
@@ -35,8 +36,10 @@ class MachineMonClient:
 
         connection.close()
 
+# Open config.json as JSON and get the host name, user name, and password
+config_file = open('config.json', 'r')
+text = config_file.read().strip()
+config_file.close
 
-config = open('config.txt', 'r')
-host_name = config.read().strip()
-config.close
-MachineMonClient().start(host_name)
+config = json.loads(text)
+MachineMonClient().start(config)
