@@ -1,5 +1,7 @@
-MachimeMon.Client/config.txt
+# MachineMon specifics
 
+MachimeMon.Client/config.txt
+MachimeMon.Client/uuid.txt
 
 # Created by https://www.gitignore.io/api/python,visualstudio
 
