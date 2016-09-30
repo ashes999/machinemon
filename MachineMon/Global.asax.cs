@@ -22,7 +22,6 @@ namespace MachineMon
     {
         private static IConnection connection;
         private static IModel channel;
-
         private Repository repository;
 
         protected void Application_Start()
@@ -48,7 +47,7 @@ namespace MachineMon
             var factory = new ConnectionFactory() { HostName = "localhost" };
             connection = factory.CreateConnection();
             channel = connection.CreateModel();
-            channel.QueueDeclare(queue: "hello", durable: false, exclusive: false, autoDelete: false, arguments: null);
+            channel.QueueDeclare(queue: RabbitMqMessageProcessor.QueueName, durable: false, exclusive: false, autoDelete: false, arguments: null);
 
             var consumer = new EventingBasicConsumer(channel);
             var processor = new RabbitMqMessageProcessor(repository, HttpContext.Current);
@@ -57,7 +56,7 @@ namespace MachineMon
             {
                 processor.Process(eventArgs);
             };
-            channel.BasicConsume(queue: "hello", noAck: true, consumer: consumer);
+            channel.BasicConsume(queue: RabbitMqMessageProcessor.QueueName, noAck: true, consumer: consumer);
         }
     }
 }

@@ -11,7 +11,8 @@ from metrics.free_disk_space import FreeDiskSpaceMetric
 class MachineMonClient:
 
     SEND_INTERVAL_IN_SECONDS = 60
-    
+    QUEUE_NAME = 'machinemon'
+
     def load_config(self):
         # Open config.json as JSON and get the host name, user name, and password
         config_file = open('config.json', 'r')
@@ -27,14 +28,14 @@ class MachineMonClient:
         credentials = pika.PlainCredentials(config["username"], config["password"])
         connection = pika.BlockingConnection(pika.ConnectionParameters(host=hostname, credentials=credentials))
         channel = connection.channel()
-        channel.queue_declare(queue='hello')
+        channel.queue_declare(queue=self.QUEUE_NAME)
 
         print("Connected. Sending messages every {0} minutes".format(self.SEND_INTERVAL_IN_SECONDS // 60))
 
         while (True):
             data = FreeDiskSpaceMetric().get_metric()
             self.add_required_fields(data)
-            channel.basic_publish(exchange='', routing_key='hello', body = json.dumps(data))
+            channel.basic_publish(exchange='', routing_key=self.QUEUE_NAME, body = json.dumps(data))
             time.sleep(self.SEND_INTERVAL_IN_SECONDS)
 
         connection.close()

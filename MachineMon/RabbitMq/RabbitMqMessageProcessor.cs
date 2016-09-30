@@ -10,11 +10,14 @@ using MachineMon.DataAccess.Repositories;
 
 namespace MachineMon.RabbitMq
 {
+    // TODO: put behind an interface and move to Infrastructure
     public class RabbitMqMessageProcessor
     {
+        public const string QueueName = "machinemon";
+
         private HttpContext httpContext;
         private Repository repository;
-
+        
         public RabbitMqMessageProcessor(Repository repository, HttpContext current)
         {
             this.repository = repository;
