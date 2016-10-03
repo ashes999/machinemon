@@ -7,13 +7,13 @@ using Dapper;
 using System.Data.SqlClient;
 using System.Configuration;
 
-namespace MachineMon.DataAccess.Repositories
+namespace MachineMon.Repository.Dapper.Repositories
 {
-    public class Repository
+    public class GenericRepository
     {
         private string connectionString;
 
-        public Repository(ConnectionStringSettings connectionString)
+        public GenericRepository(ConnectionStringSettings connectionString)
         {
             this.connectionString = connectionString.ConnectionString;
         }

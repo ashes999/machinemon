@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace MachineMon
+namespace MachineMon.Web
 {
     public class RouteConfig
     {

@@ -281,9 +281,13 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MachineMon.DataAccess\MachineMon.DataAccess.csproj">
+    <ProjectReference Include="..\MachineMon.DataAccess\MachineMon.Repository.Dapper.csproj">
       <Project>{4A73DAAF-C374-4C5D-B8A1-FE20077DD559}</Project>
-      <Name>MachineMon.DataAccess</Name>
+      <Name>MachineMon.Repository.Dapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MachineMon.DomainEntities\MachineMon.Core.csproj">
+      <Project>{1bfe599e-deac-41cf-a174-9216cdcbfb43}</Project>
+      <Name>MachineMon.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

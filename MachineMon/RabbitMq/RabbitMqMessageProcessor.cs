@@ -1,14 +1,12 @@
-﻿using MachineMon.DataAccess.DataTransferObjects;
+﻿using MachineMon.Core.Domain;
+using MachineMon.Repository.Dapper.Repositories;
 using Newtonsoft.Json;
 using RabbitMQ.Client.Events;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Web;
-using MachineMon.DataAccess.Repositories;
 
-namespace MachineMon.RabbitMq
+namespace MachineMon.Web.RabbitMq
 {
     // TODO: put behind an interface and move to Infrastructure
     public class RabbitMqMessageProcessor
@@ -16,9 +14,9 @@ namespace MachineMon.RabbitMq
         public const string QueueName = "machinemon";
 
         private HttpContext httpContext;
-        private Repository repository;
+        private GenericRepository repository;
         
-        public RabbitMqMessageProcessor(Repository repository, HttpContext current)
+        public RabbitMqMessageProcessor(GenericRepository repository, HttpContext current)
         {
             this.repository = repository;
             this.httpContext = current;

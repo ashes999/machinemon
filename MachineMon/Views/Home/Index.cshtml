@@ -13,10 +13,10 @@
         <h2>Messages</h2>
         <ul>
             @{ 
-                var messages = ViewBag.Messages as IEnumerable<MachineMon.DataAccess.DataTransferObjects.Message>;
+                var messages = ViewBag.Messages as IEnumerable<MachineMon.Core.Domain.Message>;
                 if (messages != null)
                 {
-                    foreach (MachineMon.DataAccess.DataTransferObjects.Message message in messages)
+                    foreach (MachineMon.Core.Domain.Message message in messages)
                     {
                     <li><strong>@message.Sender: </strong>@message.Contents (@message.MessageDateTimeUtc.ToLocalTime()</li>
                         }

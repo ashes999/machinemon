@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Optimization;
 
-namespace MachineMon
+namespace MachineMon.Web
 {
     public class BundleConfig
     {

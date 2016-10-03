@@ -7,7 +7,7 @@ using System.Net.Http;
 using System.Text;
 using System.Web.Http;
 
-namespace MachineMon.Controllers
+namespace MachineMon.Web.Controllers
 {
     public class RandomController : ApiController
     {

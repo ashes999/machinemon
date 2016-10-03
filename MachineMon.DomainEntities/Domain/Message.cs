@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MachineMon.DataAccess.DataTransferObjects
+namespace MachineMon.Core.Domain
 {
     public class Message
     {

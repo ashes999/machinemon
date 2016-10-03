@@ -1,17 +1,16 @@
-﻿using MachineMon.DataAccess.DataTransferObjects;
-using System;
-using System.Collections.Generic;
+﻿using MachineMon.Core.Domain;
+using MachineMon.Repository.Dapper.Repositories;
 using System.Linq;
 using System.Web.Mvc;
 
-namespace MachineMon.Controllers
+namespace MachineMon.Web.Controllers
 {
     public class HomeController : Controller
     {
         public ActionResult Index()
         {
             var connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"];
-            var repo = new DataAccess.Repositories.Repository(connectionString);
+            var repo = new GenericRepository(connectionString);
             var messages = repo.GetAll<Message>("SELECT * FROM Message");
             messages = messages.OrderBy(m => m.Sender).ThenByDescending(m => m.MessageDateTimeUtc);
             ViewBag.Messages = messages;

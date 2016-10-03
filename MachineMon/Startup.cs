@@ -1,8 +1,8 @@
 ﻿using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartupAttribute(typeof(MachineMon.Startup))]
-namespace MachineMon
+[assembly: OwinStartupAttribute(typeof(MachineMon.Web.Startup))]
+namespace MachineMon.Web
 {
     public partial class Startup
     {

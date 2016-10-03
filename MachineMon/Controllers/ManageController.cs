@@ -6,9 +6,9 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using MachineMon.Models;
+using MachineMon.Web.Models;
 
-namespace MachineMon.Controllers
+namespace MachineMon.Web.Controllers
 {
     [Authorize]
     public class ManageController : Controller
