@@ -7,8 +7,8 @@
     <ProjectGuid>{1BFE599E-DEAC-41CF-A174-9216CDCBFB43}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MachineMon.DomainEntities</RootNamespace>
-    <AssemblyName>MachineMon.DomainEntities</AssemblyName>
+    <RootNamespace>MachineMon.Core</RootNamespace>
+    <AssemblyName>MachineMon.Core</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -43,6 +43,7 @@
     <Compile Include="Domain\Host.cs" />
     <Compile Include="Domain\Message.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\IGenericRepository.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

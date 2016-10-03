@@ -1,4 +1,5 @@
 ﻿using MachineMon.Core.Domain;
+using MachineMon.Core.Repositories;
 using MachineMon.Repository.Dapper.Repositories;
 using Newtonsoft.Json;
 using RabbitMQ.Client.Events;
@@ -14,9 +15,9 @@ namespace MachineMon.Web.RabbitMq
         public const string QueueName = "machinemon";
 
         private HttpContext httpContext;
-        private GenericRepository repository;
+        private IGenericRepository repository;
         
-        public RabbitMqMessageProcessor(GenericRepository repository, HttpContext current)
+        public RabbitMqMessageProcessor(IGenericRepository repository, HttpContext current)
         {
             this.repository = repository;
             this.httpContext = current;

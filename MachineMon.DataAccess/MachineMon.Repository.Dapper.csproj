@@ -55,6 +55,12 @@
     <Content Include="Migrations\001_CreateMessagesTable.sql" />
     <Content Include="Migrations\002_CreateHostsTable.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MachineMon.DomainEntities\MachineMon.Core.csproj">
+      <Project>{1BFE599E-DEAC-41CF-A174-9216CDCBFB43}</Project>
+      <Name>MachineMon.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

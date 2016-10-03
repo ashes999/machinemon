@@ -1,4 +1,5 @@
-﻿using MachineMon.Repository.Dapper.Repositories;
+﻿using MachineMon.Core.Repositories;
+using MachineMon.Repository.Dapper.Repositories;
 using MachineMon.Web.RabbitMq;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -15,7 +16,6 @@ namespace MachineMon.Web
     {
         private static IConnection connection;
         private static IModel channel;
-        private GenericRepository repository;
 
         protected void Application_Start()
         {
@@ -24,8 +24,6 @@ namespace MachineMon.Web
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-
-            this.repository = new GenericRepository(ConfigurationManager.ConnectionStrings["DefaultConnection"]);
             this.SetupRabbitMqSubscriber();
         }
 
@@ -37,6 +35,8 @@ namespace MachineMon.Web
 
         private void SetupRabbitMqSubscriber()
         {
+            var repository = (IGenericRepository)System.Web.Mvc.DependencyResolver.Current.GetService(typeof(IGenericRepository));
+
             var factory = new ConnectionFactory() { HostName = "localhost" };
             connection = factory.CreateConnection();
             channel = connection.CreateModel();

@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 using Dapper;
 using System.Data.SqlClient;
 using System.Configuration;
+using MachineMon.Core.Repositories;
 
 namespace MachineMon.Repository.Dapper.Repositories
 {
-    public class GenericRepository
+    public class GenericRepository : IGenericRepository
     {
         private string connectionString;
 
