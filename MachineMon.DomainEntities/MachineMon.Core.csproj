@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domain\ConfigurationSetting.cs" />
     <Compile Include="Domain\Host.cs" />
     <Compile Include="Domain\Message.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

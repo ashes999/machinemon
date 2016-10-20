@@ -54,6 +54,7 @@
   <ItemGroup>
     <Content Include="Migrations\001_CreateMessagesTable.sql" />
     <Content Include="Migrations\002_CreateHostsTable.sql" />
+    <Content Include="Migrations\003_CreateConfigSettingsTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MachineMon.DomainEntities\MachineMon.Core.csproj">
