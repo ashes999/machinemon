@@ -31,6 +31,12 @@
         </div>
     </div>
     <div class="container body-content">
+        @{ 
+            if (ViewBag.Message != null || TempData["Message"] != null)
+            {
+                <div style="border: 1px solid #888; background: #eee;">@(ViewBag.Message)@(TempData["Message"])</div>
+            }
+        }
         @RenderBody()
         <hr />
         <footer>

@@ -22,5 +22,21 @@ namespace MachineMon.Web.Controllers
             var hosts = genericRepository.GetAll<Host>("SELECT * FROM Host");
             return View(hosts);
         }
+
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Create(Host host)
+        {
+            // TODO: validation.
+            host.Id = Guid.NewGuid();
+            this.genericRepository.Insert<Host>(host);
+
+            TempData.Add("Message", string.Format("Host added: {0}.", host.FriendlyName));
+            return RedirectToAction("Index");
+        }
     }
 }
