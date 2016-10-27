@@ -13,6 +13,7 @@ from metrics.free_disk_space import FreeDiskSpaceMetric
 
 class MachineMonClient:
 
+    CONNECT_RETRY_INTERVAL_IN_SECONDS = 5
     SEND_INTERVAL_IN_SECONDS = 60
     QUEUE_NAME = 'machinemon'
     UUID_FILENAME = 'uuid.txt'
@@ -31,14 +32,15 @@ class MachineMonClient:
         connected = False
         tried = 0
         
-        while not connected and tried < 5:
+        while not connected:
+            
             try:
                 tried += 1
                 connection = pika.BlockingConnection(pika.ConnectionParameters(host=server_hostname, credentials=credentials))
                 connected = True
             except:            
                 print("Connection failed. Retry #{0} ...".format(tried))
-                time.sleep(5)
+                time.sleep(MachineMonClient.CONNECT_RETRY_INTERVAL_IN_SECONDS)
         
         if connected == False:
             print("Failed to connect. Check the server name and credentials in config.json are correct and that the server is up.")
