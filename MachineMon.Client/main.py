@@ -5,6 +5,7 @@ import json
 import os
 import pika
 import socket
+import sys
 import time
 import uuid
 
@@ -23,9 +24,26 @@ class MachineMonClient:
         config = self.load_config()
 
         server_hostname = config["hostname"]
-        print("Connecting to {0} ...".format(server_hostname))
         credentials = pika.PlainCredentials(config["username"], config["password"])
-        connection = pika.BlockingConnection(pika.ConnectionParameters(host=server_hostname, credentials=credentials))
+        
+        print("Connecting to {0} ...".format(server_hostname))
+        
+        connected = False
+        tried = 0
+        
+        while not connected and tried < 5:
+            try:
+                tried += 1
+                connection = pika.BlockingConnection(pika.ConnectionParameters(host=server_hostname, credentials=credentials))
+                connected = True
+            except:            
+                print("Connection failed. Retry #{0} ...".format(tried))
+                time.sleep(5)
+        
+        if connected == False:
+            print("Failed to connect. Check the server name and credentials in config.json are correct and that the server is up.")
+            sys.exit(1)
+            
         channel = connection.channel()
         channel.queue_declare(queue=self.QUEUE_NAME)
 
