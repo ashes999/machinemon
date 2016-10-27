@@ -27,25 +27,8 @@ class MachineMonClient:
         server_hostname = config["hostname"]
         credentials = pika.PlainCredentials(config["username"], config["password"])
         
-        print("Connecting to {0} ...".format(server_hostname))
-        
-        connected = False
-        tried = 0
-        
-        while not connected:
-            
-            try:
-                tried += 1
-                connection = pika.BlockingConnection(pika.ConnectionParameters(host=server_hostname, credentials=credentials))
-                connected = True
-            except:            
-                print("Connection failed. Retry #{0} ...".format(tried))
-                time.sleep(MachineMonClient.CONNECT_RETRY_INTERVAL_IN_SECONDS)
-        
-        if connected == False:
-            print("Failed to connect. Check the server name and credentials in config.json are correct and that the server is up.")
-            sys.exit(1)
-            
+        print("Connecting to {0} ...".format(server_hostname, credentials))
+        connection = self.connect_to_server(server_hostname, credentials)
         channel = connection.channel()
         channel.queue_declare(queue=self.QUEUE_NAME)
 
@@ -54,7 +37,16 @@ class MachineMonClient:
         while (True):
             data = FreeDiskSpaceMetric().get_metric()
             self.add_required_fields(data)
-            channel.basic_publish(exchange='', routing_key=self.QUEUE_NAME, body = json.dumps(data))
+
+            try:
+                channel.basic_publish(exchange='', routing_key=self.QUEUE_NAME, body = json.dumps(data))
+            except:
+                print("Connection to server lost. Reconnecting.")
+                connection = self.connect_to_server(server_hostname, credentials)
+                channel = connection.channel()
+                channel.queue_declare(queue=self.QUEUE_NAME)
+                print("Connected.")
+                
             time.sleep(self.SEND_INTERVAL_IN_SECONDS)
 
         connection.close()
@@ -84,5 +76,20 @@ class MachineMonClient:
             f = open(self.UUID_FILENAME, 'w')
             f.write(self.host_id.hex)
             f.close()
+
+    def connect_to_server(self, server_hostname, credentials):
+        connected = False
+        tried = 0
+        
+        while not connected:
+            try:
+                tried += 1
+                connection = pika.BlockingConnection(pika.ConnectionParameters(host=server_hostname, credentials=credentials))
+                connected = True
+            except:            
+                print("Connection failed. Retry #{0} ...".format(tried))
+                time.sleep(MachineMonClient.CONNECT_RETRY_INTERVAL_IN_SECONDS)
+        
+        return connection
 
 MachineMonClient().start()
