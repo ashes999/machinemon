@@ -5,6 +5,7 @@ namespace MachineMon.App_Start
 {
     using System;
     using System.Web;
+    using System.Linq;
 
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 
@@ -13,6 +14,9 @@ namespace MachineMon.App_Start
     using Core.Repositories;
     using Repository.Dapper.Repositories;
     using System.Configuration;
+    using Core.Services;
+    using Core.Domain;
+    using System.Text;
 
     public static class NinjectWebCommon 
     {
@@ -64,9 +68,19 @@ namespace MachineMon.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-            kernel.Bind<IGenericRepository>()
-                .To<GenericRepository>()
-                .WithConstructorArgument<ConnectionStringSettings>(ConfigurationManager.ConnectionStrings["DefaultConnection"]);
+            var connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"];
+            var repository = new GenericRepository(connectionString);
+
+            kernel.Bind<IGenericRepository>().To<GenericRepository>().WithConstructorArgument<ConnectionStringSettings>(connectionString);
+
+            var secureKey = repository.GetAll<ConfigurationSetting>().SingleOrDefault(c => c.Setting == "SecureKey");
+            if (secureKey == null)
+            {
+                AesEncryptionService.GenerateSecureKeyIfMissing(repository);
+                secureKey = repository.GetAll<ConfigurationSetting>().Single(c => c.Setting == "SecureKey");
+            }
+            
+            kernel.Bind<IEncryptionService>().To<AesEncryptionService>().WithConstructorArgument(secureKey);
         }        
     }
 }

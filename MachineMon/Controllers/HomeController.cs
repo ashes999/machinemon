@@ -18,7 +18,7 @@ namespace MachineMon.Web.Controllers
         public ActionResult Index()
         {
             var connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"];
-            var messages = this.genericRepository.GetAll<Message>("SELECT * FROM Message");
+            var messages = this.genericRepository.GetAll<Message>();
             messages = messages.OrderBy(m => m.Sender).ThenByDescending(m => m.MessageDateTimeUtc);
             ViewBag.Messages = messages;
             return View();

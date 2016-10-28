@@ -15,6 +15,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{A77A302F-9
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MachineMon.Core", "MachineMon.DomainEntities\MachineMon.Core.csproj", "{1BFE599E-DEAC-41CF-A174-9216CDCBFB43}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MachineMon.Encryption", "MachineMon.Encryption\MachineMon.Encryption.csproj", "{E26288DD-09B5-4FCA-996A-5F69BB2BDD5C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{1BFE599E-DEAC-41CF-A174-9216CDCBFB43}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1BFE599E-DEAC-41CF-A174-9216CDCBFB43}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1BFE599E-DEAC-41CF-A174-9216CDCBFB43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E26288DD-09B5-4FCA-996A-5F69BB2BDD5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E26288DD-09B5-4FCA-996A-5F69BB2BDD5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E26288DD-09B5-4FCA-996A-5F69BB2BDD5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E26288DD-09B5-4FCA-996A-5F69BB2BDD5C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -44,5 +50,6 @@ Global
 		{4A73DAAF-C374-4C5D-B8A1-FE20077DD559} = {C4F0A539-B3FB-4406-A1B3-47D6F80D75D5}
 		{E52263F1-F564-45BE-B246-0B26186C3AD1} = {C4F0A539-B3FB-4406-A1B3-47D6F80D75D5}
 		{1BFE599E-DEAC-41CF-A174-9216CDCBFB43} = {A77A302F-9620-4A84-B248-29E0A3AA9971}
+		{E26288DD-09B5-4FCA-996A-5F69BB2BDD5C} = {C4F0A539-B3FB-4406-A1B3-47D6F80D75D5}
 	EndGlobalSection
 EndGlobal

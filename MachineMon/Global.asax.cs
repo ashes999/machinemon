@@ -34,7 +34,6 @@ namespace MachineMon.Web
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             this.repository = (IGenericRepository)System.Web.Mvc.DependencyResolver.Current.GetService(typeof(IGenericRepository));
-            this.GenerateSecureKeyIfMissing();
             this.SetupRabbitMqSubscriber();
         }
         
@@ -60,28 +59,6 @@ namespace MachineMon.Web
                 processor.Process(eventArgs);
             };
             channel.BasicConsume(queue: RabbitMqMessageProcessor.QueueName, noAck: true, consumer: consumer);
-        }
-
-        /// <summary>
-        /// The first time you run the web application, it generates a random key to use to encrypt machine passwords.
-        /// This is stored in plaintext in web.config. Since MachineMon is a hosted solution, this is probably secure enough for now.
-        /// Note that deleting this will generate a new key, but it will cause decryption to fail for all host passwords.
-        /// </summary>
-        private void GenerateSecureKeyIfMissing()
-        {
-            var config = repository.GetAll<ConfigurationSetting>("SELECT * FROM ConfigurationSetting").SingleOrDefault(c => c.Setting == "SecureKey");
-            if (config == null)
-            {
-                using (var provider = new System.Security.Cryptography.RNGCryptoServiceProvider())
-                {
-                    // Key is missing. Regenerate it.
-                    var bytes = new byte[32]; // 32 characters = 256 bytes, which is the key size for AES
-                    provider.GetBytes(bytes);
-                    var key = Convert.ToBase64String(bytes);
-                    config = new ConfigurationSetting() { Setting = "SecureKey", Value = key };
-                    this.repository.Insert<ConfigurationSetting>(config);
-                }                
-            }
         }
     }
 }

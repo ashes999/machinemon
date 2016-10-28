@@ -19,10 +19,11 @@ namespace MachineMon.Repository.Dapper.Repositories
             this.connectionString = connectionString.ConnectionString;
         }
 
-        public IEnumerable<T> GetAll<T>(string sql, object parameters = null)
+        public IEnumerable<T> GetAll<T>(object parameters = null)
         {
             using (var connection = new SqlConnection(connectionString))
             {
+                var sql = $"SELECT * FROM {typeof(T).Name}";
                 return connection.Query<T>(sql, parameters);
             }
         }
@@ -32,7 +33,7 @@ namespace MachineMon.Repository.Dapper.Repositories
             var tableName = typeof(T).Name;
             var properties = GetProperties<T>();
             var values = GetValues<T>(properties);
-
+            
             using (var connection = new SqlConnection(connectionString))
             {
                 connection.Execute(string.Format("INSERT INTO {0} ({1}) VALUES ({2})", tableName, string.Join(",", properties), values), instance);

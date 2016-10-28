@@ -3,23 +3,27 @@ using System.Web.Mvc;
 using System;
 using MachineMon.Repository.Dapper.Repositories;
 using MachineMon.Core.Repositories;
+using System.Linq;
+using MachineMon.Core.Services;
 
 namespace MachineMon.Web.Controllers
 {
     public class HostController : Controller
     {
         private IGenericRepository genericRepository;
+        private IEncryptionService encryptionService;
 
-        public HostController(IGenericRepository repository)
+        public HostController(IGenericRepository repository, IEncryptionService encryptionService)
         {
             this.genericRepository = repository;
+            this.encryptionService = encryptionService;
         }
 
         // GET: Host
         public ActionResult Index()
         {
             var connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"];
-            var hosts = genericRepository.GetAll<Host>("SELECT * FROM Host");
+            var hosts = genericRepository.GetAll<Host>();
             return View(hosts);
         }
 
@@ -32,7 +36,10 @@ namespace MachineMon.Web.Controllers
         public ActionResult Create(Host host)
         {
             // TODO: validation.
+
             host.Id = Guid.NewGuid();
+
+            host.Password = this.encryptionService.Encrypt(host.Password);
             this.genericRepository.Insert<Host>(host);
 
             TempData.Add("Message", string.Format("Host added: {0}.", host.FriendlyName));

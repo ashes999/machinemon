@@ -8,7 +8,7 @@ namespace MachineMon.Core.Repositories
 {
     public interface IGenericRepository
     {
-        IEnumerable<T> GetAll<T>(string sql, object parameters = null);
+        IEnumerable<T> GetAll<T>(object parameters = null);
 
         void Insert<T>(T instance);
 
